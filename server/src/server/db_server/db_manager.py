@@ -1,8 +1,10 @@
-from typing import Any, List, Optional, Type
-from sqlalchemy import create_engine, select
-from sqlalchemy.orm import sessionmaker, Session
 from contextlib import contextmanager
+from typing import List, Type
 
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import Session, sessionmaker
+
+from server.db_server.dto import BaseTDO
 from server.db_server.models import Base
 
 
@@ -37,9 +39,7 @@ class DBManager:
             database = config.get("database")
             user = config.get("user")
             password = config.get("password")
-            return create_engine(
-                f"postgresql://{user}:{password}@{host}:{port}/{database}"
-            )
+            return create_engine(f"postgresql://{user}:{password}@{host}:{port}/{database}")
 
         else:
             raise ValueError(f"Unsupported dialect: {dialect}")
@@ -78,7 +78,7 @@ class DBManager:
         with self.session() as s:
             s.add_all(objects)
 
-    def _get(self, model: Type, session: Session, **filters) -> Optional[Any]:
+    def _get(self, model: Type, session: Session, **filters) -> BaseTDO:
         """
         Get a single object by filters
 
@@ -98,7 +98,8 @@ class DBManager:
         for key, value in filters.items():
             stmt = stmt.where(getattr(model, key) == value)
         result = session.execute(stmt)
-        return result.scalar_one_or_none()
+        db_res = result.scalar_one()
+        return BaseTDO(name=db_res.name, email=db_res.email)
 
     def update(self, obj):
         """Update an existing object"""
@@ -129,20 +130,3 @@ class DBManager:
             objects = result.scalars().all()
             for obj in objects:
                 s.delete(obj)
-
-    def count(self, model: Type, **filters) -> int:
-        """
-        Count objects matching filters
-
-        Args:
-            model: The model class to query
-            **filters: Column name and value pairs to filter by
-
-        Returns:
-            Count of matching objects
-
-        Example:
-            count = db.count(User)
-            count = db.count(User, name='Alice')
-        """
-        return len(self.get_all(model, **filters))

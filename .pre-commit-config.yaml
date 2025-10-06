@@ -1,3 +1,6 @@
+exclude: ^server/src/server/grpc_server/proto/.*$
+
+
 repos:
   # General pre-commit hooks
   - repo: https://github.com/pre-commit/pre-commit-hooks

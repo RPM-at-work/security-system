@@ -12,16 +12,14 @@ if __name__ == "__main__":
 
     # SQLite Example
     log.info("=== SQLite Example ===")
-    db = DBManager('sqlite', database=':memory:')
+    db = DBManager("sqlite", database=":memory:")
 
     # Create tables
     db.create_tables()
 
-    db.add(User(
-        name="x", email="y@z.com"
-    ))
+    db.add(User(name="x", email="y@z.com"))
 
     with db.session() as session:
         name = db._get(User, session, name="x").name
         log.info(name)
-        assert name == 'x'
+        assert name == "x"

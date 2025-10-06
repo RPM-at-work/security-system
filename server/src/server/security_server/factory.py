@@ -1,11 +1,13 @@
 from server.db_server.db_manager import DBManager
-from server.grpc.server import GRPCServer
+from server.grpc_server.server import GRPCServer
 
 
 class Factory:
-    def create_db_server(self) -> DBManager:
-        # return DBServer()
-        pass
+    @classmethod
+    def create_db_server(cls, dialect, **kwargs) -> DBManager:
+        return DBManager(dialect=dialect, **kwargs)
 
-    def create_grpc_server(self) -> GRPCServer:
-        pass
+    @classmethod
+    def create_grpc_server(cls) -> GRPCServer:
+        # create and register servicer
+        return GRPCServer()
