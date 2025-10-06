@@ -1,5 +1,7 @@
 from proto import definition_pb2, definition_pb2_grpc
 
+# ruff: noqa: N802
+
 
 class GRPCServicer(definition_pb2_grpc.GreeterServicer):
     """GRPC Servicer"""
