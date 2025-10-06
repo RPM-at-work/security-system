@@ -4,7 +4,6 @@ requires-python = ">=3.12"
 
 [manifest]
 members = [
-    "security-system",
     "server",
 ]
 
@@ -510,23 +509,13 @@ wheels = [
 ]
 
 [[package]]
-name = "security-system"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "mkdocs" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "mkdocs", specifier = ">=1.6.1" }]
-
-[[package]]
 name = "server"
 version = "0.1.0"
 source = { editable = "server" }
 dependencies = [
     { name = "grpcio" },
     { name = "grpcio-tools" },
+    { name = "mkdocs" },
     { name = "protobuf" },
     { name = "pydantic" },
     { name = "sqlalchemy" },
@@ -541,6 +530,7 @@ dev = [
 requires-dist = [
     { name = "grpcio", specifier = ">=1.75.1" },
     { name = "grpcio-tools", specifier = ">=1.75.1" },
+    { name = "mkdocs", specifier = ">=1.6.1" },
     { name = "protobuf", specifier = ">=6.32.1" },
     { name = "pydantic", specifier = ">=2.11.9" },
     { name = "sqlalchemy", specifier = ">=2.0.43" },

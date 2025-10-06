@@ -10,7 +10,8 @@ class STMAPIConfig(BaseModel):
 
 
 class DBServerConfig(BaseModel):
-    pass
+    dialect: str
+    database: str
 
 
 class CameraConfig(BaseModel):
@@ -22,4 +23,5 @@ class BackendConfig(BaseModel):
 
 
 class GRPCConfig(BaseModel):
-    pass
+    host: str
+    port: int

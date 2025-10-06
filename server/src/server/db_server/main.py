@@ -20,6 +20,6 @@ if __name__ == "__main__":
     db.add(User(name="x", email="y@z.com"))
 
     with db.session() as session:
-        name = db._get(User, session, name="x").name
+        name = db.get(User, session, name="x").name
         log.info(name)
         assert name == "x"

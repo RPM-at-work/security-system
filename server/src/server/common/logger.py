@@ -5,16 +5,19 @@ class Logger:
     def __init__(self, name: str, level: int = logging.INFO):
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
+        self._initialized = False
 
     def setup(self):
         # Console handler
-        handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            "[%(asctime)s][%(name)s][%(levelname)s]: %(message)s",
-            datefmt="%Y.%m.%d %H:%M",
-        )
-        handler.setFormatter(formatter)
-        self.logger.addHandler(handler)
+        if not self._initialized:
+            handler = logging.StreamHandler()
+            formatter = logging.Formatter(
+                "[%(asctime)s][%(levelname)s]: %(message)s",
+                datefmt="%Y.%m.%d %H:%M",
+            )
+            handler.setFormatter(formatter)
+            self.logger.addHandler(handler)
+            self._initialized = True
 
     def debug(self, message: str) -> None:
         self.logger.debug(message)

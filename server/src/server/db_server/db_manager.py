@@ -25,18 +25,21 @@ class DBManager:
         self.SessionFactory = sessionmaker(bind=self.engine)
         self.base = Base
 
-    def _create_engine(self, dialect: str, **config):
+    def start(self):
+        self.create_tables()
+
+    def _create_engine(self, dialect: str, database: str, **config):
         """Create SQLAlchemy engine based on dialect"""
         dialect = dialect.lower()
 
         if dialect == "sqlite":
-            db_path = config.get("database", ":memory:")
+            db_path = database
             return create_engine(f"sqlite:///{db_path}")
 
         elif dialect in ("postgresql", "postgres"):
             host = config.get("host", "localhost")
             port = config.get("port", 5432)
-            database = config.get("database")
+            database = database
             user = config.get("user")
             password = config.get("password")
             return create_engine(f"postgresql://{user}:{password}@{host}:{port}/{database}")
@@ -57,14 +60,11 @@ class DBManager:
         finally:
             session.close()
 
-    def __del__(self):
-        self.drop_tables()
-
     def create_tables(self):
         """Create all tables defined in models"""
         self.base.metadata.create_all(self.engine)
 
-    def drop_tables(self):
+    def _drop_tables(self):
         self.base.metadata.drop_all(self.engine)
 
     # CRUD Methods
@@ -78,7 +78,7 @@ class DBManager:
         with self.session() as s:
             s.add_all(objects)
 
-    def _get(self, model: Type, session: Session, **filters) -> BaseTDO:
+    def get(self, model: Type, session: Session, **filters) -> BaseTDO:
         """
         Get a single object by filters
 
