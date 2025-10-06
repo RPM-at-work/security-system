@@ -32,6 +32,11 @@ npm -v # Should print "11.6.0".
 - run "pre-commit install"
 - cd application && run "npm install"
 
+### run server
+
+```bash
+uv run server
+```
 
 ### docs
 ```bash

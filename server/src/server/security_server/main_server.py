@@ -10,7 +10,7 @@ log = setup_logger("security-system", logging.INFO)
 sqlite_config_model = DBServerConfig(
     **{
         "dialect": "sqlite",
-        "database": "app.db",
+        "database": "/tmp/security-tmp-db.db",
     }
 )
 
@@ -26,7 +26,9 @@ class SecurityServer:
     def __init__(self):
         log.info("Initializing security server")
         self.db_server = Factory.create_db_server(dialect=sqlite_config_model.dialect, database=sqlite_config_model.database)
-        self.grpc_server = Factory.create_grpc_server(host=grpc_config_model.host, port=grpc_config_model.port, db=self.db_server)
+        self.grpc_server = Factory.create_grpc_server(host=grpc_config_model.host, port=grpc_config_model.port)
+        self.grpc_server.register_services(database=self.db_server)
+
         signal.signal(signal.SIGINT, self.intercept_signals)
 
     def start(self):
@@ -38,7 +40,7 @@ class SecurityServer:
 
     def stop(self):
         # stop sequence
-        log.info("Stopping DB server")
+        log.info("Stopping GRPC server")
         self.grpc_server.stop()
 
         log.info("Server has stopped!")
@@ -49,7 +51,11 @@ class SecurityServer:
         exit(sig)
 
 
+def main():
+    server = SecurityServer()
+    server.start()
+
+
 if __name__ == "__main__":
-    ss = SecurityServer()
-    ss.start()
-    pass
+    main()
+    # server is running, stop with ctrl-c, send SIGINT, stop Pycharm

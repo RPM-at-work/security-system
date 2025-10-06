@@ -30,7 +30,6 @@ class DBManager:
     def start(self):
         self.create_tables()
         self.SessionFactory = sessionmaker(bind=self.engine)
-        log.info("Created database engine")
 
     def _create_engine(self, dialect: str, database: str, **config):
         """Create SQLAlchemy engine based on dialect"""
@@ -38,6 +37,8 @@ class DBManager:
 
         if dialect == "sqlite":
             db_path = database
+            if not db_path:
+                return create_engine("sqlite://")
             return create_engine(f"sqlite:///{db_path}")
 
         elif dialect in ("postgresql", "postgres"):

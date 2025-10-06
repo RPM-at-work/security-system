@@ -6,13 +6,13 @@ import grpc
 from server.common.logger import setup_logger
 from server.grpc_server.proto import definition_pb2, definition_pb2_grpc
 
-log = setup_logger("API")
+log = setup_logger(__name__)
 
 
 class ServerAPIInterface(ABC):
     @abstractmethod
     def say_hello(self, name: str, email: str):
-        """gRPC method implementation"""
+        """SayHello gRPC method implementation"""
 
 
 class ServerAPI(ServerAPIInterface):

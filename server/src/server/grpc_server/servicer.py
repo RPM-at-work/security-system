@@ -11,12 +11,12 @@ log = setup_logger(__name__)
 class GRPCServicer(definition_pb2_grpc.GreeterServicer):
     """GRPC Servicer"""
 
-    def __init__(self, db: DBManager):
-        self.db = db
+    def __init__(self, database: DBManager):
+        self.database = database
 
     def SayHello(self, request, context):
         log.info(f"SayHello called with: {request.name}, adding to DB")
-        self.db.add(
+        self.database.add(
             obj=User(
                 name=request.name,
                 email=request.email,
