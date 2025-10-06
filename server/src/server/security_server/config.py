@@ -14,12 +14,20 @@ class DBServerConfig(BaseModel):
     database: str
 
 
+class DBServerConfigPostgres(DBServerConfig):
+    host: str
+    port: int
+    user: str
+    password: str
+
+
 class CameraConfig(BaseModel):
     pass
 
 
 class BackendConfig(BaseModel):
-    pass
+    host: str
+    port: int
 
 
 class GRPCConfig(BaseModel):

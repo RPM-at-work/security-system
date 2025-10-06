@@ -16,7 +16,7 @@ grpc_config = GRPCConfig(**{"host": "localhost", "port": 50051})
 
 class TestSecurityServer:
     def test_factory(self):
-        assert isinstance(Factory.create_db_server(**db_config.model_dump()), DBManager)
+        assert isinstance(Factory.create_db_server(db_config), DBManager)
         assert isinstance(Factory.create_grpc_server(**grpc_config.model_dump()), GRPCServer)
 
 

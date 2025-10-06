@@ -7,6 +7,7 @@ from sqlalchemy.orm import sessionmaker
 from server.common.logger import setup_logger
 from server.db_server.dto import BaseTDO
 from server.db_server.models import Base
+from server.security_server.config import DBServerConfig
 
 log = setup_logger(__name__)
 
@@ -14,7 +15,7 @@ log = setup_logger(__name__)
 class DBManager:
     """Pythonic database interface using SQLAlchemy"""
 
-    def __init__(self, dialect: str, database: str, **config):
+    def __init__(self, config: DBServerConfig):
         """
         Initialize database connection
 
@@ -24,29 +25,30 @@ class DBManager:
                 For SQLite: database (path, or ':memory:')
                 For PostgreSQL: host, port, database, user, password
         """
-        self.engine = self._create_engine(dialect, database, **config)
+        self._config = config
+        self.engine = self._create_engine()
         self.SessionFactory = None
 
     def start(self):
         self.create_tables()
         self.SessionFactory = sessionmaker(bind=self.engine)
 
-    def _create_engine(self, dialect: str, database: str, **config):
+    def _create_engine(self):
         """Create SQLAlchemy engine based on dialect"""
-        dialect = dialect.lower()
+        dialect = self._config.dialect
 
         if dialect == "sqlite":
-            db_path = database
+            db_path = self._config.database
             if not db_path:
                 return create_engine("sqlite://")
             return create_engine(f"sqlite:///{db_path}")
 
         elif dialect in ("postgresql", "postgres"):
-            host = config.get("host", "localhost")
-            port = config.get("port", 5432)
-            db_path = database
-            user = config.get("user")
-            password = config.get("password")
+            host = self._config.host
+            port = self._config.port
+            db_path = self._config.database
+            user = self._config.user
+            password = self._config.password
             return create_engine(f"postgresql://{user}:{password}@{host}:{port}/{db_path}")
 
         else:

@@ -3,6 +3,7 @@ import logging
 from server.common.logger import setup_logger
 from server.db_server.db_manager import DBManager
 from server.db_server.models import User
+from server.security_server.config import DBServerConfig
 
 log = setup_logger("main_db", logging.INFO)
 
@@ -11,7 +12,7 @@ log = setup_logger("main_db", logging.INFO)
 if __name__ == "__main__":
     # SQLite Example
     log.info("=== SQLite Example ===")
-    db = DBManager(dialect="sqlite", database="app.db")
+    db = DBManager(DBServerConfig(dialect="sqlite", database=":memory:"))
 
     # Create tables
     db.start()

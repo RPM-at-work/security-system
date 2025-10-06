@@ -3,7 +3,8 @@
 - run on linux (ubuntu 22.04+, physical / VM): https://www.youtube.com/watch?v=DhVjgI57Ino&t=575
 - install uv: https://docs.astral.sh/uv/getting-started/installation/
 - install python 3.12 with: https://docs.astral.sh/uv/guides/install-python/  (uv python install 3.12)
-- install pycharm (if premium it'll work with JS as well), configure interpreter for uv, and python at /local/share/uv/cpython...
+- install pycharm (if premium it'll work with JS as well)
+- configure interpreter for uv, and python at /local/share/uv/cpython...
     - if premium can SSH from pycharm with gateway to the linux machine
     - if not then just DL pycharm on the linux machine
 - install npm and nodejs:

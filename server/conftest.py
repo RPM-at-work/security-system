@@ -10,7 +10,7 @@ db_config = DBServerConfig(**{"dialect": "sqlite", "database": "/tmp/tests/app.d
 
 @pytest.fixture(scope="module")
 def db():
-    db = Factory.create_db_server(**db_config.model_dump())
+    db = Factory.create_db_server(db_config)
     db.start()
     yield db
     db._drop_tables()

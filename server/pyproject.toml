@@ -10,11 +10,14 @@ dependencies = [
     "protobuf>=6.32.1",
     "pydantic>=2.11.9",
     "sqlalchemy>=2.0.43",
-    "mkdocs>=1.6.1"
+    "mkdocs>=1.6.1",
+    "typer>=0.19.2",
+    "psycopg2-binary>=2.9.10",
 ]
 
 [project.scripts]
 server = "server.security_server.main_server:main"
+cli = "server.cli.cli_entry:app"
 
 [build-system]
 requires = ["uv_build>=0.8.22,<0.9.0"]

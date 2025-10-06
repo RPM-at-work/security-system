@@ -30,13 +30,13 @@ repos:
     hooks:
       - id: mypy
 
-  # need to test (seems like location or the rules dont apply)
+  # Works, need to check linters
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v18.1.8
+    rev: v21.1.2
     hooks:
-      - id: clang-format
-        files: ^stm/.*\.c?$
-        types: [file]
+    - id: clang-format
+      types_or: [c++, c]
+
 
   # need to test
   - repo: https://github.com/pre-commit/mirrors-eslint
