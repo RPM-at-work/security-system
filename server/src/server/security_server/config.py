@@ -17,7 +17,7 @@ class CameraConfig(BaseModel):
     pass
 
 
-class ApplicationConfig(BaseModel):
+class BackendConfig(BaseModel):
     pass
 
 

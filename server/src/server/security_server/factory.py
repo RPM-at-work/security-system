@@ -1,11 +1,9 @@
-from server.db_server.interface import DBInterface
+from server.db_server.db_manager import DBManager
 from server.grpc.server import GRPCServer
 
 
 class Factory:
-
-
-    def create_db_server(self) -> DBInterface:
+    def create_db_server(self) -> DBManager:
         # return DBServer()
         pass
 
