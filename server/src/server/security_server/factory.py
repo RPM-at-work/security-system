@@ -8,6 +8,6 @@ class Factory:
         return DBManager(dialect=dialect, database=database, **kwargs)
 
     @classmethod
-    def create_grpc_server(cls, host: str, port: int) -> GRPCServer:
+    def create_grpc_server(cls, host: str, port: int, db: DBManager) -> GRPCServer:
         # create and register servicer
-        return GRPCServer(host=host, port=port)
+        return GRPCServer(host=host, port=port, db=db)

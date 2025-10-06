@@ -11,7 +11,7 @@ log = setup_logger("API")
 
 class ServerAPIInterface(ABC):
     @abstractmethod
-    def say_hello(self):
+    def say_hello(self, name: str, email: str):
         """gRPC method implementation"""
 
 
@@ -34,13 +34,18 @@ class ServerAPI(ServerAPIInterface):
         finally:
             channel.close()
 
-    def say_hello(self):
-        with self._grpc_stub(definition_pb2_grpc.GreeterStub) as stub:
-            response = stub.SayHello(definition_pb2.HelloRequest(name="Mogozrobich"))
-            log.info(f"SayHello response: {response.message}")
-            return response.message
+    def say_hello(self, name: str, email: str):
+        try:
+            with self._grpc_stub(definition_pb2_grpc.GreeterStub) as stub:
+                response = stub.SayHello(definition_pb2.HelloRequest(name=name, email=email))
+                log.info(f"SayHello response: {response.message}")
+                return response.message
+        except grpc.RpcError as e:
+            err = f"RPC error: {e.__dict__['_state'].code.name}"
+            log.error(err)
+            raise grpc.RpcError(err) from e
 
 
 if __name__ == "__main__":
     api = ServerAPI("localhost", 50051)
-    api.say_hello()
+    api.say_hello("mogozrob2", "domofon2")

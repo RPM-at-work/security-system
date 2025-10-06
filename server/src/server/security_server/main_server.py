@@ -10,7 +10,7 @@ log = setup_logger("security-system", logging.INFO)
 sqlite_config_model = DBServerConfig(
     **{
         "dialect": "sqlite",
-        "database": ":memory:",
+        "database": "app.db",
     }
 )
 
@@ -24,10 +24,10 @@ grpc_config_model = GRPCConfig(
 
 class SecurityServer:
     def __init__(self):
-        self.db_server = Factory.create_db_server(dialect=sqlite_config_model.dialect, database=sqlite_config_model.database)
-        self.grpc_server = Factory.create_grpc_server(host=grpc_config_model.host, port=grpc_config_model.port)
-        signal.signal(signal.SIGINT, self.intercept_signals)
         log.info("Initializing security server")
+        self.db_server = Factory.create_db_server(dialect=sqlite_config_model.dialect, database=sqlite_config_model.database)
+        self.grpc_server = Factory.create_grpc_server(host=grpc_config_model.host, port=grpc_config_model.port, db=self.db_server)
+        signal.signal(signal.SIGINT, self.intercept_signals)
 
     def start(self):
         # init sequence
@@ -52,3 +52,4 @@ class SecurityServer:
 if __name__ == "__main__":
     ss = SecurityServer()
     ss.start()
+    pass

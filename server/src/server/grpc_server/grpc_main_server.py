@@ -3,16 +3,18 @@ from typing import Optional
 
 from grpc import Server, server
 
+from server.db_server.db_manager import DBManager
 from server.grpc_server.proto.definition_pb2_grpc import add_GreeterServicer_to_server
 from server.grpc_server.servicer import GRPCServicer
 
 
 class GRPCServer:
-    def __init__(self, host: str, port: int):
+    def __init__(self, host: str, port: int, db: DBManager):
         self._thread_pool: ThreadPoolExecutor = ThreadPoolExecutor(max_workers=10, thread_name_prefix="grpc_")
         self._server: Optional[Server] = None
         self._host = host
         self._port = port
+        self._db = db
 
     def connect(self):
         self._server = server(thread_pool=self._thread_pool)
@@ -29,4 +31,4 @@ class GRPCServer:
         self._server.stop(grace=10)
 
     def register_services(self):
-        add_GreeterServicer_to_server(GRPCServicer(), self._server)
+        add_GreeterServicer_to_server(GRPCServicer(db=self._db), self._server)
