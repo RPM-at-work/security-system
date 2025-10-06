@@ -30,6 +30,14 @@ jobs:
       - name: prepare pre-commit hooks
         run: uv tool install pre-commit
 
+      - name: Setup node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install react project
+        run: cd application && npm install
+
       - name: Run pre-commit hooks
         # For example, using `pytest`
         run: uv run pre-commit run --all-files
