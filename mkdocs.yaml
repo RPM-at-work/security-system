@@ -1,0 +1,4 @@
+site_name: security-system
+nav:
+  - Start:
+      - docs/index.md

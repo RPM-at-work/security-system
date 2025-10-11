@@ -1,0 +1,55 @@
+exclude: ^server/src/server/grpc_server/proto/.*$
+
+
+repos:
+  # General pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+        args: [ --maxkb=1000 ]
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: detect-private-key
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      # Run the linter
+      - id: ruff
+        args: [ --fix ]
+      # Run the formatter
+      - id: ruff-format
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.13.0
+    hooks:
+      - id: mypy
+
+  # Works, need to check linters
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v21.1.2
+    hooks:
+    - id: clang-format
+      types_or: [c++, c]
+
+
+  # need to test
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.11.1
+    hooks:
+      - id: eslint
+        files: ^application/.*\.[jt]sx?$
+        types: [file]
+        args: ['--config', 'application/eslint.config.js']
+        additional_dependencies:
+          - eslint@9.11.1
+          - eslint-plugin-react
+          # Add any plugins you need, for example:
+          # - eslint-plugin-import
+          # - '@typescript-eslint/eslint-plugin'
+          # - '@typescript-eslint/parser'

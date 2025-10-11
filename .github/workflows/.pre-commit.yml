@@ -1,0 +1,46 @@
+name: pre-commit
+
+on:
+  pull_request:
+    branches: [ master ]
+  push:
+    branches: [ master ]
+
+jobs:
+  pre-commit:
+    name: python
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: "Set up Python"
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: prepare env
+        run: uv sync
+
+      - name: prepare pre-commit hooks
+        run: uv tool install pre-commit
+
+      - name: Setup node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      - name: Install react project
+        run: cd application && npm install
+
+      - name: Run pre-commit hooks
+        # For example, using `pytest`
+        run: uv run pre-commit run --all-files
+
+      - name: Run Pytests
+        run: $uv run pytest server/

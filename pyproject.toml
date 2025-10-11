@@ -1,0 +1,9 @@
+[tool.uv.sources]
+server = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+    "server",
+]
+
+exclude = ["application", "docs"]

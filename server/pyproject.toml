@@ -1,0 +1,89 @@
+[project]
+name = "server"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "grpcio>=1.75.1",
+    "grpcio-tools>=1.75.1",
+    "protobuf>=6.32.1",
+    "pydantic>=2.11.9",
+    "sqlalchemy>=2.0.43",
+    "mkdocs>=1.6.1",
+    "typer>=0.19.2",
+    "psycopg2-binary>=2.9.10",
+]
+
+[project.scripts]
+server = "server.security_server.main_server:main"
+cli = "server.cli.cli_entry:app"
+
+[build-system]
+requires = ["uv_build>=0.8.22,<0.9.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4.2",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --junit-xml=reports/report.xml"
+
+# Ruff linter configuration
+[tool.ruff]
+line-length = 180
+indent-width = 4
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = []
+exclude = [
+    "migrations/",
+    "__pycache__",
+    ".venv",
+    "build/"
+]
+
+# Mypy configuration
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+
+# Untyped definitions and calls
+disallow_untyped_calls = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+
+# None and Optional handling
+no_implicit_optional = true
+strict_optional = true
+
+# Warnings
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+
+# Error messages
+show_error_context = true
+show_column_numbers = true
+show_error_codes = true
+pretty = true
+
+# Strictness flags (uncomment for strict mode)
+# strict = true
+
+# Miscellaneous
+ignore_missing_imports = false
+follow_imports = "normal"
+namespace_packages = true
